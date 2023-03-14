@@ -39,10 +39,7 @@ biblioteca = {
 
 @app.get("/{id}")
 def usuario(id:str):
-    if id == "1":
-        return biblioteca["1"]
-    elif id == "2":
-        return biblioteca["2"]
+        return biblioteca[id]
 
 @app.get("/{id}/{idlib}")
 def usuario(id:str,idlib:str):
