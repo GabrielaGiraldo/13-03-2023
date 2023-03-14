@@ -2,37 +2,48 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-# @app.get("/hola/{persona}")
-# def buenas(persona):
-#     return f"Buenas {persona}"
+biblioteca = {
+    "1":{
+        "nombre":"Gabriela",
+        "edad":"17",
+        "libros":{
+            "1":{
+                "libro":"El retrato de Dorian grey",
+                "fecha":"13/03/2023",
+                "estado":"prestado"
+                },
+            "2":{
+                "libro":"La divina comedia",
+                "fecha":"16/12/2023",
+                "estado":"prestado"
+                }
+        }
+    },
+    "2":{
+        "nombre":"Sammy",
+        "edad":"16",
+        "libros":{
+            "1":{
+                "libro":"Como no tirarme fisica",
+                "fecha":"13/03/2023",
+                "estado":"prestado"
+                },
+            "2":{
+                "libro":"Michis.com",
+                "fecha":"04/01/2023",
+                "estado":"prestado"
+                }
+        }
+    }       
+}
 
-# @app.get("/mellamo/{nombre}")
-# def mellamo(nombre):
-#     return f"me llamo {nombre}"
+@app.get("/{id}")
+def usuario(id:str):
+    if id == "1":
+        return biblioteca["1"]
+    elif id == "2":
+        return biblioteca["2"]
 
-# @app.get("/apellido/{apellido}")
-# def apellido(apellido):
-#     return f"Y mi apellido es {apellido}"
-
-# @app.get("/tengo/{edad}")
-# def tengo(edad):
-#     return f"{edad} años"
-
-# @app.get("/momia/{ser}")
-# def momia(ser):
-#     return f"Y honestamente soy, una {ser}"
-
-@app.get("/saludo/{nombre}")
-def saludo(nombre:str):
-    return f"Hola {nombre}, buenas tardes"
-
-@app.get("/cuadrado/{l1}/{l2}")
-def saludo(l1:float,l2:float):
-    resultado = (l1*l2)
-    return f"El area del cuadro tiene como resultado {resultado}"
-
-@app.get("/edad/{nombre}/{edad}")
-def saludo(nombre:str,edad:int):
-    if edad>=18:
-        return f"{nombre} tienes {edad}, por ende eres mayor de edad"
-    return f"{nombre} tienes {edad}, por ende eres menor de edad"
+@app.get("/{id}/{idlib}")
+def usuario(id:str,idlib:str):
+    return biblioteca[id]["libros"][idlib]
