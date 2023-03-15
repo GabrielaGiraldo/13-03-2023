@@ -1,46 +1,57 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
-biblioteca = {
-    "1":{
-        "nombre":"Gabriela",
-        "edad":"17",
-        "libros":{
-            "1":{
-                "libro":"El retrato de Dorian grey",
-                "fecha":"13/03/2023",
-                "estado":"prestado"
-                },
-            "2":{
-                "libro":"La divina comedia",
-                "fecha":"16/12/2023",
-                "estado":"prestado"
-                }
-        }
-    },
-    "2":{
-        "nombre":"Sammy",
-        "edad":"16",
-        "libros":{
-            "1":{
-                "libro":"Como no tirarme fisica",
-                "fecha":"13/03/2023",
-                "estado":"prestado"
-                },
-            "2":{
-                "libro":"Michis.com",
-                "fecha":"04/01/2023",
-                "estado":"prestado"
-                }
-        }
-    }       
-}
+biblioteca = {}
 
-@app.get("/{id}")
-def usuario(id:str):
-        return biblioteca[id]
+@app.get("/")
+def hello_world_check():
+    return {
+        "titulo":"Biblioteca STEAM",
+        "versión":"v0.0.1"
+    }
 
-@app.get("/{id}/{idlib}")
-def usuario(id:str,idlib:str):
-    return biblioteca[id]["libros"][idlib]
+@app.get("/personas")
+def personas_all():
+    return biblioteca
+
+@app.get("/personas/{id}")
+def personas_one(id:str):
+    return biblioteca[id]
+
+class PersonaBiblioteca(BaseModel):
+    id:str
+    nombre:str
+    edad:int
+    libros:str
+    fecha:str
+    clave:int
+    
+@app.post("/personas")
+def personas_add(request:PersonaBiblioteca):
+    j = {
+        "nombre":request.nombre,
+        "edad":request.edad,
+        "libros": {
+            request.clave:{
+                "libro":request.libros,
+                "fecha":request.fecha,
+                "estado":"prestadito"
+            }            
+        }
+    }
+    biblioteca[request.id] = j
+    return "Listico"
+class PersonaModify(BaseModel):
+    id:str
+    nombre:str
+    edad:int
+@app.put("/persona")
+def persona_modify(request:PersonaModify):
+    for i in biblioteca:
+        if i.id == request.id:
+            i.nombre = request.nombre
+            i.edad = request.edad
+            return i
+    return {"error":"persona no encontrada"}
