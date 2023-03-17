@@ -43,15 +43,20 @@ def personas_add(request:PersonaBiblioteca):
     }
     biblioteca[request.id] = j
     return "Listico"
-class PersonaModify(BaseModel):
+class Modificar(BaseModel):
     id:str
     nombre:str
     edad:int
 @app.put("/persona")
-def persona_modify(request:PersonaModify):
-    for i in biblioteca:
-        if i.id == request.id:
-            i.nombre = request.nombre
-            i.edad = request.edad
-            return i
-    return {"error":"persona no encontrada"}
+def persona_modify(request:Modificar):
+    if biblioteca[request.id]["nombre"] != request.nombre:
+        biblioteca[request.id]["nombre"] = request.nombre
+    elif biblioteca[request.id]["edad"] != request.edad:
+        biblioteca[request.id]["edad"] = request.edad
+
+class eliminar(BaseModel):
+    id:str
+            
+@app.delete("/personas")
+def personas_delete(request:eliminar):
+    del biblioteca[request.id]
