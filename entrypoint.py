@@ -17,10 +17,7 @@ biblioteca = {}
 
 @server.get("/",tags=["Lectura de datos"])
 def hello_world_check():
-    """_summary_
-
-    Returns:
-        _type_: _description_
+    """Esta función sirve a modo de prueba
     """
     return {
         "titulo":"Biblioteca STEAM",
@@ -29,22 +26,22 @@ def hello_world_check():
 
 @server.get("/personas",tags=["Lectura de datos"])
 def personas_all():
-    """_summary_
+    """Ver
 
     Returns:
-        _type_: _description_
+        Regresa o muestra a todos los usuarios dentro de la biblioteca
     """
     return biblioteca
 
 @server.get("/personas/{id}",tags=["Lectura de datos"])
 def personas_one(id:str):
-    """_summary_
+    """Ver id
 
     Args:
-        id (str): _description_
+        id (str): El id de la persona
 
     Returns:
-        _type_: _description_
+        Muestra a un usuario en especifico
     """
     return biblioteca[id]
 
@@ -60,10 +57,10 @@ def personas_add(request:PersonaBiblioteca):
     """Función de añadir usuarios
 
     Args:
-        request (PersonaBiblioteca): _description_
+        pregunta a el usuario los datos necesarios para agregar su información a la biblioteca
 
     Returns:
-        _type_: _description_
+        Regresa la información del usuario
     """
     j = {
         "nombre":request.nombre,
